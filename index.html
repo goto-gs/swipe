@@ -9,26 +9,50 @@
 </head>
 
 <body>
-    <div id="imagegallery"
+    <div id="calendar-side"
         style="border: 1px solid rgb(102, 102, 102); width: 400px; height: 300px; margin-top: 10px; margin-bottom: 10px; position: relative;">
         <img src="./img/garden_i400x300.jpg" alt="flower">
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <script src="./jquery.touchwipe.1.1.1.js"></script>
-    <script src="./jquery.touchwipe.min.js"></script>
 
     <script>
-        $("#imagegallery").touchwipe({
-            wipeLeft: function () { alert("left"); },
-            wipeRight: function () { alert("right"); },
-            wipeUp: function () { alert("up"); },
-            wipeDown: function () { alert("down"); },
-            min_move_x: 20,
-            min_move_y: 20,
-            preventDefaultEvents: true
+        SwipeCheck('#calendar-side', '70', function () {
+            alert('右だよ');
+        }, function (target) {
+            alert('左だよ');
         });
+        function SwipeCheck(_selector, min_move, _rCallback = null, _lCallback = null) {
+            $(_selector).on('touchstart', onTouchStart); //指が触れたか検知
+            $(_selector).on('touchmove', onTouchMove); //指が動いたか検知
+            $(_selector).on('touchend', onTouchEnd); //指が離れたか検知
+            var direction, position;
+            //スワイプ開始時の横方向の座標を格納
+            function onTouchStart(event) {
+                position = getPosition(event);
+                direction = ''; //一度リセットする
+            }
+            //スワイプの方向（left／right）を取得
+            function onTouchMove(event) {
+                if (position - getPosition(event) > min_move) { // 以上移動しなければスワイプと判断しない
+                    direction = 'left'; //左と検知
+                } else if (position - getPosition(event) < -min_move) {  // 以上移動しなければスワイプと判断しない
+                    direction = 'right'; //右と検知
+                }
+            }
+            function onTouchEnd(event) {
+                if (direction == 'right') {
+                    _rCallback();
+                } else if (direction == 'left') {
+                    _lCallback();
+                }
+            }
+            //横方向の座標を取得
+            function getPosition(event) {
+                return event.originalEvent.touches[0].pageX;
+            }
+        }
     </script>
 </body>
 
