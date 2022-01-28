@@ -16,10 +16,10 @@
     <script src="jquery.touchwipe.min.js"></script>
     <script>
         $("#imagegallery").touchwipe({
-            wipeLeft: function () { console.log("left"); },
-            wipeRight: function () { console.log("right"); },
-            wipeUp: function () { console.log("up"); },
-            wipeDown: function () { console.log("down"); },
+            wipeLeft: function () { alert("left"); },
+            wipeRight: function () { alert("right"); },
+            wipeUp: function () { alert("up"); },
+            wipeDown: function () { alert("down"); },
             min_move_x: 20,
             min_move_y: 20,
             preventDefaultEvents: true
